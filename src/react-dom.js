@@ -28,6 +28,9 @@ function createDOM(VNode) {
   // 1.创建元素 2.处理子元素 3.处理属性值
   const { type, props } = VNode;
   let dom;
+  if (typeof type === 'function' && VNode.$$typeof === REACT_ELEMENT) {
+    return getDomByFunctionComponent(VNode);
+  }
   if (type && VNode.$$typeof === REACT_ELEMENT) {
     dom = document.createElement(type);
   }
@@ -42,6 +45,13 @@ function createDOM(VNode) {
   }
   setPropsForDOM(dom, props);
   return dom;
+}
+
+function getDomByFunctionComponent(VNode) {
+  let { type, props } = VNode;
+  let renderVNode = type(props);
+  if (!renderVNode) return null;
+  return createDOM(renderVNode);
 }
 
 function setPropsForDOM(dom, VNodeProps = {}) {
