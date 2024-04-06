@@ -8,5 +8,5 @@ import ReactDOM from './react-dom';
 
 // 旧版本初始化
 // ReactDOM.render(<div>Hello React</div>, document.getElementById('root'));
-
+ReactDOM.render(<div>Hello React</div>, document.getElementById('root'));
 console.log(<div>Hello React</div>);
