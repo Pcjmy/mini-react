@@ -1,3 +1,30 @@
+class Updater {
+  constructor(ClassComponentInstance) {
+    this.ClassComponentInstance = ClassComponentInstance;
+    this.pendingStates = [];
+  }
+  addState(partialState) {
+    this.pendingStates.push(partialState);
+    this.preHandleForUpdate();
+  }
+  preHandleForUpdate() {
+    // if (isBatch) {
+
+    // } else {
+    //   this.launchUpdate();
+    // }
+  }
+  launchUpdate() {
+    const { ClassComponentInstance, pendingStates } = this;
+    if (pendingStates.length === 0) return
+    ClassComponentInstance.state = this.pendingStates.reduce((preState, newState) => {
+      return { ...preState, ...newState }
+    }, ClassComponentInstance.state);
+    this.pendingStates.length = 0;
+    ClassComponentInstance.update();
+  }
+}
+
 export class Component {
   static IS_CLASS_COMPONENT = true;
   constructor(props) {
