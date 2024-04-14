@@ -1,3 +1,7 @@
+export let updaterQueue = {
+  isBatch: false,
+  updaters: new Set(),
+}
 class Updater {
   constructor(ClassComponentInstance) {
     this.ClassComponentInstance = ClassComponentInstance;
