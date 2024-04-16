@@ -1,3 +1,5 @@
+import { findDomByVNode, updateDomTree } from './react-dom';
+
 export let updaterQueue = {
   isBatch: false,
   updaters: new Set(),
@@ -19,11 +21,11 @@ class Updater {
     this.preHandleForUpdate();
   }
   preHandleForUpdate() {
-    // if (isBatch) {
-
-    // } else {
-    //   this.launchUpdate();
-    // }
+    if (updaterQueue.isBatch) {
+      updaterQueue.updaters.add(this);
+    } else {
+      this.launchUpdate();
+    }
   }
   launchUpdate() {
     const { ClassComponentInstance, pendingStates } = this;
@@ -41,15 +43,21 @@ export class Component {
   constructor(props) {
     this.state = {};
     this.props = props;
+    this.updater = new Updater(this);
   }
   setState(partialState) {
     // 1.合并属性
     // 2.重新渲染进行更新
-    this.update()
+    this.updater.addState(partialState);
   }
   update() {
     // 1.获取重新执行render函数后的虚拟DOM 新虚拟DOM
     // 2.根据新虚拟DOM生成新的真实DOM
     // 3.将真实DOM挂载到页面上
+    let oldVNode = this.oldVNode;
+    let oldDOM = findDomByVNode(oldVNode);
+    let newVNode = this.render();
+    updateDomTree(oldDOM, newVNode);
+    this.oldVNode = newVNode
   }
 }

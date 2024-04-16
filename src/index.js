@@ -5,8 +5,12 @@ function MyFunctionComponent(props) {
 }
 
 class MyClassComponent extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { a: '123' }
+  }
   render() {
-    return <div style={{ color: 'red'}}>Hello React<span>{this.props.name}</span></div>;
+    return <div style={{ color: 'red'}}>Hello React<span>{this.state.a}</span></div>;
   }
 }
 
