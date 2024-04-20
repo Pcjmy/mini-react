@@ -1,4 +1,5 @@
 import { REACT_ELEMENT } from './utils';
+import { addEvent } from './event';
 
 function render(VNode, containDOM) {
   // 将虚拟DOM转化成真实DOM
@@ -80,7 +81,7 @@ function setPropsForDOM(dom, VNodeProps = {}) {
   for(let key in VNodeProps) {
     if (key === 'children') continue;
     if(/^on[A-Z].*/.test(key)) {
-      // TODO: 事件处理
+      addEvent(dom, key.toLowerCase(), VNodeProps[key]);
     } else if(key === 'style') {
       Object.keys(VNodeProps[key]).forEach(styleName => {
         dom.style[styleName] = VNodeProps[key][styleName];
