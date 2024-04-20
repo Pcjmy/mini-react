@@ -16,6 +16,30 @@ function dispatchEvent(nativeEvent) {
 }
 
 function createSyntheticEvent(nativeEvent) {
-  let syntheticEvent = {};
+  let nativeEventKeyValues = {};
+  for (let key in nativeEvent) {
+    nativeEventKeyValues[key] = typeof nativeEvent[key] === 'function' ? nativeEvent[key].bind(nativeEvent) : nativeEvent[key];
+  }
+  let syntheticEvent = Object.assign(nativeEventKeyValues, {
+    nativeEvent,
+    isDefaultPrevented: false,
+    isPropagationStopped: false,
+    preventDefault: function() {
+      this.isDefaultPrevented = true;
+      if (this.nativeEvent.preventDefault) {
+        this.nativeEvent.preventDefault();
+      } else {
+        this.nativeEvent.returnValue = false;
+      }
+    },
+    stopPropagation: function() {
+      this.isPropagationStopped = true;
+      if (this.nativeEvent.stopPropagation) {
+        this.nativeEvent.stopPropagation();
+      } else {
+        this.nativeEvent.cancelBubble = true;
+      }
+    }
+  });
   return syntheticEvent;
 }
