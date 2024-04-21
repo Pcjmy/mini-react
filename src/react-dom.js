@@ -57,12 +57,6 @@ function getDomByClassComponent(VNode) {
   let instance = new type(props);
   let renderVNode = instance.render();
   instance.oldVNode = renderVNode;
-  // 测试代码
-  setTimeout(() => {
-    instance.setState({ a: '123456' });
-    console.log('123456');
-  }, 3000);
-  // 测试代码
   if(!renderVNode) return null;
   return createDOM(renderVNode);
 }

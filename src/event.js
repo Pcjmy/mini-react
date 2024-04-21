@@ -1,4 +1,4 @@
-import { updaterQueue, flushUpdateQueue } from './Component';
+import { updaterQueue, flushUpdaterQueue } from './Component';
 
 export function addEvent(dom, eventName, bindFunction) {
   dom.attach = dom.attach || {};
@@ -12,7 +12,18 @@ function dispatchEvent(nativeEvent) {
   updaterQueue.isBatch = true;
   // 事件合成机制的核心点二：屏蔽浏览器之间的差异
   let syntheticEvent = createSyntheticEvent(nativeEvent);
-  flushUpdateQueue();
+  let target = nativeEvent.target;
+  while(target) {
+    syntheticEvent.currentTarget = target;
+    let eventName = `on${nativeEvent.type}`;
+    let bindFunction = target.attach && target.attach[eventName];
+    bindFunction && bindFunction(syntheticEvent);
+    if (syntheticEvent.isPropagationStopped) {
+      break;
+    }
+    target = target.parentNode;
+  }
+  flushUpdaterQueue();
 }
 
 function createSyntheticEvent(nativeEvent) {
