@@ -1,13 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-// function MyFunctionComponent(props) {
-//   return <div style={{ color: 'red'}}>Hello React</div>;
-// }
+import React from './react';
+import ReactDOM from './react-dom';
+function MyFunctionComponent(props) {
+  return <div style={{ color: 'red'}}>Hello React</div>;
+}
 
-const result = React.forwardRef((props, ref) => {
+const MyForwardRefFunctionComponent = React.forwardRef((props, ref) => {
   return <div ref={ref}></div>
 })
+
+ReactDOM.render(<MyForwardRefFunctionComponent />, document.getElementById('root'));
+
+const result = <MyForwardRefFunctionComponent />;
 console.log(result);
+
+const result1 = <MyFunctionComponent />;
+console.log(result1);
 
 // class MyClassComponent extends React.Component {
 //   counter = 1;

@@ -1,4 +1,4 @@
-import { REACT_ELEMENT } from './utils';
+import { REACT_ELEMENT, REACT_FORWARD_REF } from './utils';
 import { addEvent } from './event';
 
 function render(VNode, containDOM) {
@@ -29,6 +29,9 @@ function createDOM(VNode) {
   // 1.创建元素 2.处理子元素 3.处理属性值
   const { type, props, ref } = VNode;
   let dom;
+  if (type && type.$$typeof === REACT_FORWARD_REF) {
+    return getDomByForwardRefFunction(VNode);
+  }
   if (typeof type === 'function' && VNode.$$typeof === REACT_ELEMENT && type.IS_CLASS_COMPONENT) {
     return getDomByClassComponent(VNode);
   }
@@ -66,6 +69,13 @@ function getDomByClassComponent(VNode) {
 function getDomByFunctionComponent(VNode) {
   let { type, props } = VNode;
   let renderVNode = type(props);
+  if (!renderVNode) return null;
+  return createDOM(renderVNode);
+}
+
+function getDomByForwardRefFunction(VNode) {
+  const { type, props, ref } = VNode;
+  const renderVNode = type.render(props, ref);
   if (!renderVNode) return null;
   return createDOM(renderVNode);
 }
