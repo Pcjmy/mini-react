@@ -1,4 +1,4 @@
-import { REACT_ELEMENT, REACT_FORWARD_REF } from './utils';
+import { REACT_ELEMENT, REACT_FORWARD_REF, REACT_TEXT } from './utils';
 import { addEvent } from './event';
 
 function render(VNode, containDOM) {
@@ -17,11 +17,8 @@ function mountArray(children, parent) {
     return ;
   }
   for (let i = 0; i < children.length; i++) {
-    if (typeof children[i] === 'string') {
-      parent.appendChild(document.createTextNode(children[i]));
-    } else {
-      mount(children[i], parent);
-    }
+    children[i].index = i;
+    mount(children[i], parent);
   }
 }
 
@@ -38,7 +35,9 @@ function createDOM(VNode) {
   if (typeof type === 'function' && VNode.$$typeof === REACT_ELEMENT) {
     return getDomByFunctionComponent(VNode);
   }
-  if (type && VNode.$$typeof === REACT_ELEMENT) {
+  if (typeof type === REACT_TEXT) {
+    dom = document.createTextNode(props.text);
+  } else if (type && VNode.$$typeof === REACT_ELEMENT) {
     dom = document.createElement(type);
   }
   if (props) {
@@ -46,8 +45,6 @@ function createDOM(VNode) {
       mount(props.children, dom)
     } else if (Array.isArray(props.children)) {
       mountArray(props.children, dom);
-    } else if(typeof props.children === 'string') {
-      dom.appendChild(document.createTextNode(props.children));
     }
   }
   setPropsForDOM(dom, props);
