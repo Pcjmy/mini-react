@@ -100,10 +100,32 @@ export function findDomByVNode(VNode) {
   if (VNode.dom) return VNode.dom;
 }
 
-export function updateDomTree(oldDOM, newVNode) {
+export function updateDomTree(oldVNode, newVNode, oldDOM) {
   let parentNode = oldDOM.parentNode;
-  parentNode.removeChild(oldDOM);
-  parentNode.appendChild(createDOM(newVNode));
+  // 新节点、旧节点都不存在
+  // 新节点存在，旧节点不存在
+  // 新节点不存在，旧节点存在
+  // 新节点存在，旧节点也存在，但是类型不一样
+  // 新节点存在，旧节点也存在，类型也一样 ---> 值得我们进行深入的比较，探索复用相关节点的方案
+  const typeMap = {
+    NO_OPERATE: !oldVNode && !newVNode,
+    ADD: !oldVNode && newVNode,
+    DELETE: oldVNode && !newVNode,
+    REPLACE: oldVNode && newVNode && oldVNode.type !== newVNode.type,
+  }
+  let UPDATE_TYPE = Object.keys(typeMap).filter(key => typeMap[key])[0];
+  switch (UPDATE_TYPE) {
+    case 'NO_OPERATE':
+      break;
+    case 'ADD':
+      break;
+    case 'DELETE':
+      break;
+    case 'REPLACE':
+      break;
+    default:
+      break;
+  }
 }
 
 const ReactDOM = {
