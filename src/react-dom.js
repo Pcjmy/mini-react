@@ -134,7 +134,10 @@ export function updateDomTree(oldVNode, newVNode, oldDOM) {
 }
 
 function removeVNode(oldVNode) {
-
+  const currentDOM = findDomByVNode(oldVNode);
+  if (currentDOM) {
+    currentDOM.removeVNode();
+  }
 }
 
 function deepDOMDiff(oldVNode, newVNode) {
