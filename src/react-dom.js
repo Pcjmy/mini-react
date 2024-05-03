@@ -175,7 +175,12 @@ function updateClassComponent(oldVNode, newVNode) {
 }
 
 function updateFunctionComponent(oldVNode, newVNode) {
-
+  let oldDOM = findDomByVNode(oldVNode);
+  if (!oldDOM) return ;
+  const { type, props } = newVNode;
+  let newRenderVNode = type(props);
+  updateDomTree(oldVNode.oldRenderVNode, newRenderVNode, oldDOM);
+  newVNode.oldRenderVNode = newRenderVNode;
 }
 
 // DOM DIFF算法的核心
