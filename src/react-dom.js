@@ -147,6 +147,39 @@ function deepDOMDiff(oldVNode, newVNode) {
     FUNCTION_COMPONENT: typeof oldVNode.type === 'function',
     TEXT: typeof oldVNode.type === REACT_TEXT
   }
+  let DIFF_TYPE = Object.keys(diffTypeMap).filter(key => diffTypeMap[key])[0];
+  switch(DIFF_TYPE) {
+    case 'ORIGIN_NODE':
+      let currentDOM = newVNode.dom = findDomByVNode(oldVNode);
+      setPropsForDOM(currentDOM, newVNode.props);
+      updateChildren(currentDOM, oldVNode.props.children, newVNode.props.children);
+      break;
+    case 'CLASS_COMPONENT':
+      updateClassComponent(oldVNode, newVNode);
+      break;
+    case 'FUNCTION_COMPONENT':
+      updateFunctionComponent(oldVNode, newVNode);
+      break;
+    case 'TEXT':
+      newVNode.dom = findDomByVNode(oldVNode);
+      newVNode.dom.textContent = newVNode.props.text;
+      break;
+    default:
+      break;
+  }
+}
+
+function updateClassComponent(oldVNode, newVNode) {
+
+}
+
+function updateFunctionComponent(oldVNode, newVNode) {
+
+}
+
+// DOM DIFF算法的核心
+function updateChildren(parentDOM, oldVNodeChildren, newVNodeChildren) {
+
 }
 
 const ReactDOM = {
