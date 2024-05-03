@@ -101,7 +101,6 @@ export function findDomByVNode(VNode) {
 }
 
 export function updateDomTree(oldVNode, newVNode, oldDOM) {
-  let parentNode = oldDOM.parentNode;
   // 新节点、旧节点都不存在
   // 新节点存在，旧节点不存在
   // 新节点不存在，旧节点存在
@@ -118,14 +117,28 @@ export function updateDomTree(oldVNode, newVNode, oldDOM) {
     case 'NO_OPERATE':
       break;
     case 'ADD':
+      oldDOM.parentNode.appendChild(createDOM(newVNode));
       break;
     case 'DELETE':
+      removeVNode(oldVNode);
       break;
     case 'REPLACE':
+      removeVNode(oldVNode);
+      oldDOM.parentNode.appendChild(createDOM(newVNode));
       break;
     default:
+      // 深度的dom diff，新老虚拟DOM都存在且类型相同
+      deepDOMDiff(oldVNode, newVNode);
       break;
   }
+}
+
+function removeVNode(oldVNode) {
+
+}
+
+function deepDOMDiff(oldVNode, newVNode) {
+
 }
 
 const ReactDOM = {
