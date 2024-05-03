@@ -170,7 +170,8 @@ function deepDOMDiff(oldVNode, newVNode) {
 }
 
 function updateClassComponent(oldVNode, newVNode) {
-
+  const classInstance = newVNode.classInstance = oldVNode.classInstance;
+  classInstance.updater.launchUpdate();
 }
 
 function updateFunctionComponent(oldVNode, newVNode) {
