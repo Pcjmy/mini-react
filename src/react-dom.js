@@ -219,7 +219,7 @@ function updateChildren(parentDOM, oldVNodeChildren, newVNodeChildren) {
       })
     }
   })
-  let VNodeToMove = actions.filter(action => action.type === MOVE).map(action => action.VNode);
+  let VNodeToMove = actions.filter(action => action.type === MOVE).map(action => action.oldVNode);
   let VNodeToDelete = Object.values(oldKeyChildMap);
   VNodeToMove.concat(VNodeToDelete).forEach(oldVNode => {
     let currentDOM = findDomByVNode(oldVNode);
