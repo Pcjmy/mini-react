@@ -9,6 +9,7 @@ function render(VNode, containDOM) {
 
 function mount(VNode, containDOM) {
   let newDOM = createDOM(VNode);
+  console.log('newDOM=', newDOM);
   newDOM && containDOM.appendChild(newDOM);
 }
 
@@ -35,7 +36,10 @@ function createDOM(VNode) {
   if (typeof type === 'function' && VNode.$$typeof === REACT_ELEMENT) {
     return getDomByFunctionComponent(VNode);
   }
-  if (typeof type === REACT_TEXT) {
+  console.log('type=', type);
+  console.log('props.text=', props.text);
+  if (type === REACT_TEXT) {
+    console.log('REACT_TEXT');
     dom = document.createTextNode(props.text);
   } else if (type && VNode.$$typeof === REACT_ELEMENT) {
     dom = document.createElement(type);
