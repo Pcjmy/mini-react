@@ -41,10 +41,4 @@ class MyClassComponent extends React.Component {
   }
 }
 
-function App(props) {
-  return <div>123<span>abc</span></div>
-}
-
-ReactDOM.render(<App />, document.getElementById('root'));
-
-console.log(<App />);
+ReactDOM.render(<MyClassComponent />, document.getElementById('root'));
