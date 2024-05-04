@@ -1,4 +1,4 @@
-import { REACT_ELEMENT, REACT_FORWARD_REF, REACT_TEXT } from './utils';
+import { REACT_ELEMENT, REACT_FORWARD_REF, REACT_TEXT, MOVE, CREATE } from './utils';
 import { addEvent } from './event';
 
 function render(VNode, containDOM) {
@@ -185,7 +185,65 @@ function updateFunctionComponent(oldVNode, newVNode) {
 
 // DOM DIFF算法的核心
 function updateChildren(parentDOM, oldVNodeChildren, newVNodeChildren) {
+  oldVNodeChildren = (Array.isArray(oldVNodeChildren) ? oldVNodeChildren : [oldVNodeChildren]).filter(Boolean);
+  newVNodeChildren = (Array.isArray(newVNodeChildren) ? newVNodeChildren : [newVNodeChildren]).filter(Boolean);
 
+  let lastNotChangedIndex = -1;
+  let oldKeyChildMap = {};
+  oldVNodeChildren.forEach((oldVNode, index) => {
+    let oldKey = oldVNode && oldVNode.key ? oldVNode.key : index;
+    oldKeyChildMap[oldKey] = oldVNode;
+  })
+  let actions = [];
+  newVNodeChildren.forEach((newVNode, index) => {
+    newVNode.index = index;
+    let newKey = newVNode.key ? newVNode.key : index;
+    let oldVNode = oldKeyChildMap[newKey];
+    if (oldVNode) {
+      deepDOMDiff(oldVNode, newVNode);
+      if (oldVNode.index < lastNotChangedIndex) {
+        actions.push({
+          type: MOVE,
+          oldVNode,
+          newVNode,
+          index
+        })
+      }
+      delete oldKeyChildMap[newKey];
+      lastNotChangedIndex = Math.max(lastNotChangedIndex, oldVNode.index);
+    } else {
+      actions.push({
+        type: CREATE,
+        newVNode,
+        index
+      })
+    }
+  })
+  let VNodeToMove = actions.filter(action => action.type === MOVE).map(action => action.VNode);
+  let VNodeToDelete = Object.values(oldKeyChildMap);
+  VNodeToMove.concat(VNodeToDelete).forEach(oldVNode => {
+    let currentDOM = findDomByVNode(oldVNode);
+    currentDOM.remove();
+  })
+
+  actions.forEach(action => {
+    let { type, oldVNode, newVNode, index } = action;
+    let childNodes = parentDOM.childNodes;
+    let childNode = childNodes[index];
+    const getDomForInsert = () => {
+      if (type === CREATE) {
+        return createDOM(newVNode);
+      }
+      if (type === MOVE) {
+        return findDomByVNode(oldVNode);
+      }
+    }
+    if (childNode) {
+      parentDOM.insertBefore(getDomForInsert(), childNode);
+    } else {
+      parentDOM.appendChild(getDomForInsert());
+    }
+  })
 }
 
 const ReactDOM = {
