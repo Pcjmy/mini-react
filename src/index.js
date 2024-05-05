@@ -13,7 +13,7 @@ class MyClassComponent extends React.Component {
 
   updateShowArr() {
     this.setState({
-      arr: this.isRest ? this.oldArr : this.newArr
+      arr: this.isReset ? this.oldArr : this.newArr
     })
     this.isReset = !this.isReset;
   }
