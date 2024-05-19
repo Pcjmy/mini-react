@@ -20,6 +20,9 @@ class Clock extends React.Component {
     console.log('componentDidMount');
   }
 
+  // 1.更新完成后调用，初始化渲染不会调用
+  // 2.当组件完成更新，需要对DOM进行某种操作的时候，适合在这个函数中进行
+  // 3.当当前的props和之前的props有所不同的时候，可以在这里进行有必要的网络请求
   componentDidUpdate(prevProps, prevState, snapshot) {
     console.log('componentDidUpdate', this.state.date);
   }
