@@ -25,6 +25,7 @@ class Clock extends React.Component {
   // 3.当当前的props和之前的props有所不同的时候，可以在这里进行有必要的网络请求
   // 4.这里虽然可以调用setState，但是要记住是有条件的调用，否则会陷入死循环
   // 5.如何shouldComponentUpdate返回false，componentDidUpdate不会执行
+  // 6.如果实现了getSnapshotBeforeUpdate，那么componentDidUpdate会接收到第三个参数
   componentDidUpdate(prevProps, prevState, snapshot) {
     console.log('componentDidUpdate', this.state.date);
   }
