@@ -31,6 +31,9 @@ class Clock extends React.Component {
     console.log('componentDidUpdate', this.state.date);
   }
 
+  // 1.组件从DOM树上卸载完成前调用
+  // 2.执行一些清理操作，比如清除定时器，取消事件订阅，取消网络请求等
+  // 3.不能在该函数中执行this.setState，不会产生新的渲染
   componentWillUnmount() {
     clearInterval(this.timerID);
   }
