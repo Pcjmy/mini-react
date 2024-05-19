@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from './react';
+import ReactDOM from './react-dom';
 
 class Clock extends React.Component {
   constructor(props) {
@@ -54,6 +54,8 @@ class Clock extends React.Component {
   }
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// const root = ReactDOM.createRoot(document.getElementById('root'));
 
-root.render(<Clock />);
+// root.render(<Clock />);
+
+ReactDOM.render(<Clock />, document.getElementById('root'));

@@ -60,7 +60,11 @@ function getDomByClassComponent(VNode) {
   let renderVNode = instance.render();
   instance.oldVNode = renderVNode;
   if(!renderVNode) return null;
-  return createDOM(renderVNode);
+  let dom = createDOM(renderVNode);
+  if (instance.componentDidMount) {
+    instance.componentDidMount();
+  }
+  return dom;
 }
 
 function getDomByFunctionComponent(VNode) {
@@ -137,6 +141,9 @@ function removeVNode(oldVNode) {
   const currentDOM = findDomByVNode(oldVNode);
   if (currentDOM) {
     currentDOM.removeVNode();
+  }
+  if (oldVNode.classInstance && oldVNode.classInstance.compontWillUnmount) {
+    oldVNode.classInstance.componentWillUnmount();
   }
 }
 
