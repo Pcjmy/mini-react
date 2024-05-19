@@ -7,6 +7,11 @@ class Clock extends React.Component {
     this.state = { date: new Date() };
   }
 
+  // 1.组建挂载到页面上之后调用
+  // 2.需要依赖真实DOM节点的相关初始化动作需要放在这里
+  // 3.适合加载数据
+  // 4.适合事件订阅
+  // 5.不适合在这里调用setState
   componentDidMount() {
     this.timerID = setInterval(
       () => this.tick(),
