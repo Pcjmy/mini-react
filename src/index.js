@@ -23,6 +23,8 @@ class Clock extends React.Component {
   // 1.更新完成后调用，初始化渲染不会调用
   // 2.当组件完成更新，需要对DOM进行某种操作的时候，适合在这个函数中进行
   // 3.当当前的props和之前的props有所不同的时候，可以在这里进行有必要的网络请求
+  // 4.这里虽然可以调用setState，但是要记住是有条件的调用，否则会陷入死循环
+  // 5.如何shouldComponentUpdate返回false，componentDidUpdate不会执行
   componentDidUpdate(prevProps, prevState, snapshot) {
     console.log('componentDidUpdate', this.state.date);
   }
@@ -48,4 +50,5 @@ class Clock extends React.Component {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(<Clock />);
