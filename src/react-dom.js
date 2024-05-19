@@ -152,7 +152,7 @@ function deepDOMDiff(oldVNode, newVNode) {
     ORIGIN_NODE: typeof oldVNode.type === 'string',
     CLASS_COMPONENT: typeof oldVNode.type === 'function' && oldVNode.type.IS_CLASS_COMPONENT,
     FUNCTION_COMPONENT: typeof oldVNode.type === 'function',
-    TEXT: typeof oldVNode.type === REACT_TEXT
+    TEXT: oldVNode.type === REACT_TEXT
   }
   let DIFF_TYPE = Object.keys(diffTypeMap).filter(key => diffTypeMap[key])[0];
   switch(DIFF_TYPE) {
