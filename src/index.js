@@ -12,6 +12,11 @@ class Clock extends React.Component {
       () => this.tick(),
       1000
     );
+    console.log('componentDidMount');
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log('componentDidUpdate', this.state.date);
   }
 
   componentWillUnmount() {
