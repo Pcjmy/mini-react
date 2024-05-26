@@ -38,6 +38,11 @@ class Clock extends React.Component {
     clearInterval(this.timerID);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('shouldComponentUpdate');
+    return false;
+  }
+
   tick() {
     this.setState({
       date: new Date()
