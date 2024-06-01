@@ -59,6 +59,7 @@ function getDomByClassComponent(VNode) {
   ref && (ref.current = instance);
   let renderVNode = instance.render();
   instance.oldVNode = renderVNode;
+  VNode.classInstance = instance;
   if(!renderVNode) return null;
   let dom = createDOM(renderVNode);
   if (instance.componentDidMount) {

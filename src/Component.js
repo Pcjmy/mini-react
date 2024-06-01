@@ -64,6 +64,10 @@ export class Component {
     // 3.将真实DOM挂载到页面上
     let oldVNode = this.oldVNode;
     let oldDOM = findDomByVNode(oldVNode);
+    if (this.constructor.getDerivedStateFromProps) {
+      let newState = this.constructor.getDerivedStateFromProps(this.props, this.state);
+      this.state = { ...this.state, ...newState };
+    }
     let newVNode = this.render();
     updateDomTree(oldVNode, newVNode, oldDOM);
     this.oldVNode = newVNode;
