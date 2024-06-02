@@ -1,50 +1,74 @@
 import React from './react';
 import ReactDOM from './react-dom';
 
-class DerivedState extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      preveUserId: 'zhangsan',
-      email: 'zhangsan@qq.com'
-    }
-  }
+class ScrollingList extends React.Component {
+  isAppend = true;
+  count = 0;
+  intervalId = 0;
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.userId !== state.preveUserId) {
-      return {
-        preveUserId: props.userId,
-        email: (props.userId + '@qq.com')
-      }
-    }
-  }
-
-  render() {
-    return <div>
-      <h1>Email:</h1>
-      <h2>{this.state.email}</h2>
-    </div>
-  }
-}
-
-class ParentClass extends React.Component {
   constructor(props) {
-    super(props)
-    this.state = { id: 'zhangsan' }
+    super(props);
+    this.listRef = React.createRef();
+    this.state = { list: [] };
   }
 
-  changeUserId = () => {
-    this.setState({
-      id: 'lisi'
-    })
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    // Are we adding new items to the list?
+    // Capture the scroll position so we can adjust scroll later.
+    if (prevState.list.length < this.state.list.length) {
+      const list = this.listRef.current;
+      return list.scrollHeight - list.scrollTop;
+    }
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // If we have a snapshot value, we've just added new items.
+    // Adjust scroll so these new items don't push the old ones out of view.
+    // (snapshot here is the value returned from getSnapshotBeforeUpdate)
+    if (snapshot !== null) {
+      const list = this.listRef.current;
+      list.scrollTop = list.scrollHeight - snapshot;
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
+  appendData = () => {
+    if (this.isAppend) {
+      this.intervalId = setInterval(() => {
+        this.setState({
+          list: [...this.state.list, this.count++]
+        })
+      }, 1000);
+    } else {
+      clearInterval(this.intervalId);
+    }
+    this.isAppend = !this.isAppend;
   }
 
   render() {
-    return <div>
-      <input type="button" value="点击改变userId" onClick={() => this.changeUserId()} />
-      <DerivedState userId={this.state.id} />
-    </div>
+    return (
+      <div>
+        <input type="button" onClick={() => this.appendData()} value="追加/暂停追加数据" />
+        <div ref={this.listRef} style={{
+          overflow: 'auto',
+          height: '400px',
+          background: '#efefef',
+        }}>{this.state.list.map(item => {
+          return <div key={item} style={{
+            height: '60px',
+            padding: '10px',
+            marginTop: '10px',
+            border: '1px solid blue',
+            borderRadius: '6px',
+          }}>{item}</div>
+        })}</div>
+      </div>
+    );
   }
 }
 
-ReactDOM.render(<ParentClass />, document.getElementById('root'));
+ReactDOM.render(<ScrollingList />, document.getElementById('root'));
