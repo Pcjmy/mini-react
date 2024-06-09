@@ -19,6 +19,9 @@ class MyApp extends React.Component {
   setAddress = (newAddress) => {
     this.setState({ address: newAddress });
   }
+  componentDidUpdate() {
+    console.log('MyApp componentDidUpdate');
+  }
   render() {
     return <div>
       <label>
