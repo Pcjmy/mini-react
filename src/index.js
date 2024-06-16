@@ -13,6 +13,8 @@ const Greeting = React.memo(function Greeting({ name }) {
   return <h3>Hello{name && ','}{name}</h3>
 })
 
+console.log('Greeting', Greeting);
+
 class MyApp extends React.Component {
   constructor(props) {
     super(props);
