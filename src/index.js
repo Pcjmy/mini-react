@@ -8,15 +8,15 @@ import ReactDOM from './react-dom';
 //   }
 // }
 
-function Greeting({ name }) {
-  console.log('Greeting render');
-  return <h3>Hello{name && ','}{name}</h3>
-}
-
-// const Greeting = React.memo(function Greeting({ name }) {
+// function Greeting({ name }) {
 //   console.log('Greeting render');
 //   return <h3>Hello{name && ','}{name}</h3>
-// })
+// }
+
+const Greeting = React.memo(function Greeting({ name }) {
+  console.log('Greeting render');
+  return <h3>Hello{name && ','}{name}</h3>
+})
 
 console.log('Greeting', Greeting);
 

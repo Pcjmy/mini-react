@@ -1,4 +1,4 @@
-import { REACT_ELEMENT, REACT_FORWARD_REF, REACT_TEXT, REACT_MEMO, MOVE, CREATE } from './utils';
+import { REACT_ELEMENT, REACT_FORWARD_REF, REACT_TEXT, REACT_MEMO, MOVE, CREATE, shallowCompare } from './utils';
 import { addEvent } from './event';
 
 function render(VNode, containDOM) {
@@ -170,7 +170,7 @@ function deepDOMDiff(oldVNode, newVNode) {
     CLASS_COMPONENT: typeof oldVNode.type === 'function' && oldVNode.type.IS_CLASS_COMPONENT,
     FUNCTION_COMPONENT: typeof oldVNode.type === 'function',
     TEXT: oldVNode.type === REACT_TEXT,
-    MEMO: oldVNode.type === REACT_MEMO
+    MEMO: oldVNode.type.$$typeof === REACT_MEMO
   }
   let DIFF_TYPE = Object.keys(diffTypeMap).filter(key => diffTypeMap[key])[0];
   switch(DIFF_TYPE) {
@@ -213,11 +213,12 @@ function updateFunctionComponent(oldVNode, newVNode) {
 
 function updateMemoFunctionComponent(oldVNode, newVNode) {
   let { type } = oldVNode;
-  if (!type.compare(oldVNode.props, newVNode.props)) {
+  if ((!type.compare && !shallowCompare(oldVNode.props, newVNode.props)) || (type.compare && !type.compare(oldVNode.props, newVNode.props))) {
     const oldDOM = findDomByVNode(oldVNode);
     const { type } = newVNode;
     let renderVNode = type.type(newVNode.props);
     updateDomTree(oldVNode.oldRenderVNode, renderVNode, oldDOM);
+    newVNode.oldRenderVNode = renderVNode;
   } else {
     newVNode.oldRenderVNode = oldVNode.oldRenderVNode;
   }
