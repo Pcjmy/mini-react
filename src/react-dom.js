@@ -79,7 +79,8 @@ function getDomByFunctionComponent(VNode) {
   let { type, props } = VNode;
   let renderVNode = type(props);
   if (!renderVNode) return null;
-  return createDOM(renderVNode);
+  let dom = VNode.dom = createDOM(renderVNode);
+  return dom;
 }
 
 function getDomByForwardRefFunction(VNode) {
@@ -202,7 +203,7 @@ function updateClassComponent(oldVNode, newVNode) {
 }
 
 function updateFunctionComponent(oldVNode, newVNode) {
-  let oldDOM = findDomByVNode(oldVNode);
+  let oldDOM = newVNode.dom = findDomByVNode(oldVNode);
   if (!oldDOM) return ;
   const { type, props } = newVNode;
   let newRenderVNode = type(props);
