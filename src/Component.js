@@ -5,6 +5,7 @@ export let updaterQueue = {
   isBatch: false,
   updaters: new Set(),
 }
+
 export function flushUpdaterQueue() {
   updaterQueue.isBatch = false;
   for(let updater of updaterQueue.updaters) {
@@ -12,6 +13,7 @@ export function flushUpdaterQueue() {
   }
   updaterQueue.updaters.clear();
 }
+
 class Updater {
   constructor(ClassComponentInstance) {
     this.ClassComponentInstance = ClassComponentInstance;

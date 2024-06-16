@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from './react';
+import ReactDOM from './react-dom';
 
 // class Greeting extends React.PureComponent {
 //   render() {
@@ -8,10 +8,15 @@ import ReactDOM from 'react-dom';
 //   }
 // }
 
-const Greeting = React.memo(function Greeting({ name }) {
+function Greeting({ name }) {
   console.log('Greeting render');
   return <h3>Hello{name && ','}{name}</h3>
-})
+}
+
+// const Greeting = React.memo(function Greeting({ name }) {
+//   console.log('Greeting render');
+//   return <h3>Hello{name && ','}{name}</h3>
+// })
 
 console.log('Greeting', Greeting);
 
