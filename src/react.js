@@ -1,5 +1,6 @@
 import { REACT_ELEMENT, REACT_FORWARD_REF, REACT_MEMO, toVNode, shallowCompare } from './utils';
 import { Component } from './Component';
+export * from './hooks';
 
 function createElement(type, properties, children) {
   let ref = properties.ref || null;
