@@ -31,8 +31,22 @@ export function useEffect(effectFunction, deps = []) {
   const currentIndex = hookIndex;
   const [destroyFunction, prevDeps] = states[hookIndex] || [null, null];
   if (!states[hookIndex] || deps.some((item, index) => item !== prevDeps[index])) {
-    destroyFunction && destroyFunction();
-    states[currentIndex] = [effectFunction(), deps];
+    setTimeout(() => {
+      destroyFunction && destroyFunction();
+      states[currentIndex] = [effectFunction(), deps];
+    })
+  }
+  hookIndex++;
+}
+
+export function useLayoutEffect(effectFunction, deps = []) {
+  const currentIndex = hookIndex;
+  const [destroyFunction, prevDeps] = states[hookIndex] || [null, null];
+  if (!states[hookIndex] || deps.some((item, index) => item !== prevDeps[index])) {
+    queueMicrotask(() => {
+      destroyFunction && destroyFunction();
+      states[currentIndex] = [effectFunction(), deps];
+    })
   }
   hookIndex++;
 }

@@ -13,7 +13,6 @@ export function createConnection(serverUrl, roomId) {
   };
 }
 
-
 function ChatRoom({ roomId }) {
   const [serverUrl, setServerUrl] = useState('https://localhost:1234');
 
@@ -23,7 +22,7 @@ function ChatRoom({ roomId }) {
     return () => {
       connection.disconnect();
     };
-  }, [roomId, serverUrl]);
+  });
 
   return (
     <div>
@@ -63,6 +62,5 @@ export default function App() {
     </div>
   );
 }
-
 
 ReactDOM.render(<App />, document.getElementById('root'));
