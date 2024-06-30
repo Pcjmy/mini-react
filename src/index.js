@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, useEffect } from './react';
+import ReactDOM from './react-dom';
 
 export function createConnection(serverUrl, roomId) {
   // A real implementation would actually connect to the server
@@ -26,16 +26,16 @@ function ChatRoom({ roomId }) {
   }, [roomId, serverUrl]);
 
   return (
-    <>
+    <div>
       <label>
         Server URL:{' '}
         <input
           value={serverUrl}
-          onChange={e => setServerUrl(e.target.value)}
+          onInput={e => setServerUrl(e.target.value)}
         />
       </label>
       <h1>Welcome to the {roomId} room!</h1>
-    </>
+    </div>
   );
 }
 
@@ -43,7 +43,7 @@ export default function App() {
   const [roomId, setRoomId] = useState('general');
   const [show, setShow] = useState(false);
   return (
-    <>
+    <div>
       <label>
         Choose the chat room:{' '}
         <select
@@ -60,7 +60,7 @@ export default function App() {
       </button>
       {show && <hr />}
       {show && <ChatRoom roomId={roomId} />}
-    </>
+    </div>
   );
 }
 
