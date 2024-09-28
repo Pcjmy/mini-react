@@ -1,5 +1,5 @@
-import React, { useRef, useImperativeHandle } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useRef, useImperativeHandle } from './react';
+import ReactDOM from './react-dom';
 
 const MyInput = React.forwardRef(function MyInput(props, ref) {
   const inputRef = useRef(null);
