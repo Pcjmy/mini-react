@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useRef } from './react';
+import ReactDOM from './react-dom';
 
 function Form() {
   const inputRef = useRef(null);
