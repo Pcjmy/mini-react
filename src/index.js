@@ -22,7 +22,7 @@ function ChatRoom({ roomId }) {
     return () => {
       connection.disconnect();
     };
-  });
+  }, [roomId, serverUrl]);
 
   return (
     <div>
